@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - claude/hebrew-clock-toddler-app-JgOve
-  workflow_dispatch:  # allows manual trigger from GitHub UI
+  workflow_dispatch:
 
 jobs:
   build:
@@ -20,17 +20,25 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Accept Android SDK licenses
+        run: yes | sdkmanager --licenses || true
+
       - name: Make gradlew executable
-        run: chmod +x HebrewClockApp/gradlew
-        working-directory: ${{ github.workspace }}
+        run: chmod +x gradlew
+        working-directory: HebrewClockApp
 
       - name: Build debug APK
-        run: ./gradlew assembleDebug --no-daemon
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
         working-directory: HebrewClockApp
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_HOME }}
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: שעון-שלי-debug
+          name: sheon-sheli-debug
           path: HebrewClockApp/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30
