@@ -10,13 +10,6 @@
         android:fillColor="#FFF9E6"
         android:pathData="M54,14 A40,40 0 1,1 53.999,14 Z" />
 
-    <!-- Clock rim -->
-    <path
-        android:strokeColor="#FFFFFF"
-        android:strokeWidth="3"
-        android:fillColor="@android:color/transparent"
-        android:pathData="M54,14 A40,40 0 1,1 53.999,14 Z" />
-
     <!-- Hour hand (pointing to ~10) -->
     <path
         android:fillColor="#E63946"
@@ -27,12 +20,10 @@
         android:fillColor="#457B9D"
         android:pathData="M54,54 L72,25 L76,37 Z" />
 
-    <!-- Center dot -->
-    <circle
+    <!-- Center dot (circle drawn as path: cx=54 cy=54 r=4) -->
+    <path
         android:fillColor="#2D3142"
-        android:cx="54"
-        android:cy="54"
-        android:r="4" />
+        android:pathData="M54,50 A4,4 0 1,0 54.001,50 Z" />
 
     <!-- 12 o'clock tick -->
     <path
