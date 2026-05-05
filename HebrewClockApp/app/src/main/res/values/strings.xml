@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">שעון שלי</string>
+    <string name="btn_now">מה השעה עכשיו?</string>
+    <string name="title">🕐 שעון שלי</string>
+</resources>

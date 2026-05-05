@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FF8C42</color>
+    <color name="colorPrimaryDark">#E63946</color>
+    <color name="colorAccent">#457B9D</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="clock_face">#FFF9E6</color>
+    <color name="hour_hand">#E63946</color>
+    <color name="minute_hand">#457B9D</color>
+</resources>
