@@ -6,11 +6,6 @@ on:
       - claude/hebrew-clock-toddler-app-JgOve
   workflow_dispatch:
 
-env:
-  GRADLE_VERSION: "8.4"
-  ANDROID_COMPILE_SDK: "34"
-  ANDROID_BUILD_TOOLS: "34.0.0"
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,25 +20,20 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Install Android SDK build tools
-        run: |
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \
-            "platforms;android-34" \
-            "build-tools;34.0.0" \
-            "platform-tools" || true
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+      - name: Accept Android SDK licenses
+        run: yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
-      - name: Install Gradle ${{ env.GRADLE_VERSION }}
+      - name: Install Gradle 8.4
         run: |
-          wget -q "https://services.gradle.org/distributions/gradle-${{ env.GRADLE_VERSION }}-bin.zip" -O /tmp/gradle.zip
+          wget -q "https://services.gradle.org/distributions/gradle-8.4-bin.zip" -O /tmp/gradle.zip
           unzip -q /tmp/gradle.zip -d /opt/gradle
-          echo "/opt/gradle/gradle-${{ env.GRADLE_VERSION }}/bin" >> $GITHUB_PATH
+          echo "/opt/gradle/gradle-8.4/bin" >> $GITHUB_PATH
 
       - name: Build debug APK
-        run: gradle assembleDebug --no-daemon --stacktrace
+        run: gradle assembleDebug --no-daemon
         working-directory: HebrewClockApp
         env:
-          ANDROID_HOME: ${{ env.ANDROID_HOME }}
+          ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
