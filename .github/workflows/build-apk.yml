@@ -29,11 +29,14 @@ jobs:
           unzip -q /tmp/gradle.zip -d /opt/gradle
           echo "/opt/gradle/gradle-8.4/bin" >> $GITHUB_PATH
 
+      - name: Write local.properties with SDK path
+        run: echo "sdk.dir=$ANDROID_SDK_ROOT" > HebrewClockApp/local.properties
+
       - name: Build debug APK
-        run: gradle assembleDebug --no-daemon
+        run: |
+          unset ANDROID_HOME
+          gradle assembleDebug --no-daemon
         working-directory: HebrewClockApp
-        env:
-          ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
