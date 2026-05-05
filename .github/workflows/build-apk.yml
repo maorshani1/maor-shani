@@ -6,6 +6,11 @@ on:
       - claude/hebrew-clock-toddler-app-JgOve
   workflow_dispatch:
 
+env:
+  GRADLE_VERSION: "8.4"
+  ANDROID_COMPILE_SDK: "34"
+  ANDROID_BUILD_TOOLS: "34.0.0"
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,18 +25,22 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Install Android SDK build tools
+        run: |
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \
+            "platforms;android-34" \
+            "build-tools;34.0.0" \
+            "platform-tools" || true
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
-      - name: Accept Android SDK licenses
-        run: yes | sdkmanager --licenses || true
-
-      - name: Make gradlew executable
-        run: chmod +x gradlew
-        working-directory: HebrewClockApp
+      - name: Install Gradle ${{ env.GRADLE_VERSION }}
+        run: |
+          wget -q "https://services.gradle.org/distributions/gradle-${{ env.GRADLE_VERSION }}-bin.zip" -O /tmp/gradle.zip
+          unzip -q /tmp/gradle.zip -d /opt/gradle
+          echo "/opt/gradle/gradle-${{ env.GRADLE_VERSION }}/bin" >> $GITHUB_PATH
 
       - name: Build debug APK
-        run: ./gradlew assembleDebug --no-daemon --stacktrace
+        run: gradle assembleDebug --no-daemon --stacktrace
         working-directory: HebrewClockApp
         env:
           ANDROID_HOME: ${{ env.ANDROID_HOME }}
